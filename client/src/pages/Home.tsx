@@ -8,11 +8,18 @@ import CountryTrends from "../components/CountryTrends"; // ✅ import component
 import NewsCard from "../components/NewsCard";
 import useGeolocation from "../hooks/GeolocationApi";
 import useNetworkInfo from "../hooks/NetworkApi";
+type Post = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  tag: string;
+  content: string;
+};
+type Tab = "for-you" | "tech" | "design" | "trends";
 
 const HomePage: React.FC = () => {
-  const [selectedTab, setSelectedTab] = useState<
-    "for-you" | "tech" | "design" | "trends"
-  >("for-you");
+  const [selectedTab, setSelectedTab] = useState<Tab>("for-you");
 
   const { effectiveType, saveData } = useNetworkInfo();
   const { country, loading: geoLoading } = useGeolocation();
@@ -34,7 +41,7 @@ const HomePage: React.FC = () => {
     return geoPosts[country] || geoPosts["India"];
   };
 
-  const articles = getArticles();
+  const articles: Post[] = getArticles();
 
   return (
     <div className="min-h-screen bg-lightbg px-4 md:px-8 py-6">
@@ -53,10 +60,10 @@ const HomePage: React.FC = () => {
 
         {/* Nav Tabs */}
         <nav className="mt-4 md:mt-0 flex gap-3 flex-wrap">
-          {["for-you", "tech", "design", "trends"].map((tab) => (
+          {(["for-you", "tech", "design", "trends"] as Tab[]).map((tab) => (
             <button
               key={tab}
-              onClick={() => setSelectedTab(tab as any)}
+              onClick={() => setSelectedTab(tab)}
               className={`px-4 py-2 rounded-full text-sm font-medium shadow transition ${
                 selectedTab === tab
                   ? "bg-watermelon text-white"

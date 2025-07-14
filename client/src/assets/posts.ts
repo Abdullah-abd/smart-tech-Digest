@@ -1,6 +1,13 @@
 
-
-export const posts = {
+type Post = {
+  id: string;
+  title: string;
+  description: string;
+  image: string;
+  tag: string;
+  content: string;
+};
+export const posts: Record<string, Post[]> = {
   India: [
     {
       id: "ai-startups-india",

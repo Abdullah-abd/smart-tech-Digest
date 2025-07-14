@@ -12,14 +12,27 @@ const defaultNetwork: NetworkInfo = {
   saveData: false,
 };
 
+type NavigatorWithConnection = Navigator & {
+  connection?: NavigatorConnection;
+  mozConnection?: NavigatorConnection;
+  webkitConnection?: NavigatorConnection;
+};
+
+type NavigatorConnection = {
+  effectiveType?: string;
+  downlink?: number;
+  saveData?: boolean;
+  addEventListener?: (type: string, listener: () => void) => void;
+  removeEventListener?: (type: string, listener: () => void) => void;
+};
+
 const useNetworkInfo = () => {
   const [networkInfo, setNetworkInfo] = useState<NetworkInfo>(defaultNetwork);
 
   useEffect(() => {
+    const nav = navigator as NavigatorWithConnection;
     const connection =
-      (navigator as any).connection ||
-      (navigator as any).mozConnection ||
-      (navigator as any).webkitConnection;
+      nav.connection || nav.mozConnection || nav.webkitConnection;
 
     if (!connection || typeof connection !== "object") {
       return;
@@ -34,7 +47,7 @@ const useNetworkInfo = () => {
       });
     };
 
-    update(); // Initial load
+    update();
     connection.addEventListener?.("change", update);
 
     return () => {

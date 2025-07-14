@@ -1,9 +1,10 @@
-import { RefObject, useEffect, useRef, useState } from "react";
+import type { RefObject } from "react";
+import { useEffect, useRef, useState } from "react";
 
 const useInView = (
   options?: IntersectionObserverInit,
   observeOnce: boolean = true
-): { ref: RefObject<HTMLElement>; isInView: boolean } => {
+): { ref: RefObject<HTMLElement | null>; isInView: boolean } => {
   const ref = useRef<HTMLElement | null>(null);
   const [isInView, setIsInView] = useState(false);
 

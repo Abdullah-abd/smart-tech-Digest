@@ -8,11 +8,12 @@ import { techPosts } from "../assets/techPosts";
 import { AdvancedImage } from "@cloudinary/react";
 import { fill } from "@cloudinary/url-gen/actions/resize";
 import { cld } from "../utils/cloudinary"; // Your configured Cloudinary instance
+type Post = (typeof posts)[keyof typeof posts][number];
 
 const PostPage: React.FC = () => {
   const [, params] = useRoute("/posts/:id");
   const postId = params?.id;
-  const [post, setPost] = useState<(typeof posts)[0] | null>(null);
+  const [post, setPost] = useState<Post | null>(null);
 
   useEffect(() => {
     const allPosts = [

@@ -1,4 +1,5 @@
 import { AdvancedImage } from "@cloudinary/react";
+import { CloudinaryImage } from "@cloudinary/url-gen"; // ✅ Added for type safety
 import { fill } from "@cloudinary/url-gen/actions/resize";
 import React, { useEffect, useRef, useState } from "react";
 import { useLocation } from "wouter";
@@ -18,7 +19,7 @@ const useInView = (threshold = 0.2) => {
       ([entry]) => {
         if (entry.isIntersecting) {
           setIsInView(true);
-          observer.disconnect(); // Only observe once
+          observer.disconnect(); // Observe only once
         }
       },
       { threshold }
@@ -50,7 +51,7 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
   const [, setLocation] = useLocation();
   const { effectiveType, saveData } = useNetworkInfo();
 
-  const [cldImage, setCldImage] = useState<any | null>(null);
+  const [cldImage, setCldImage] = useState<CloudinaryImage | null>(null); // ✅ Typed properly
   const [isBroken, setIsBroken] = useState(false);
 
   const { ref, isInView } = useInView();
@@ -72,18 +73,13 @@ const NewsCard: React.FC<NewsCardProps> = ({ article }) => {
         .format("auto")
         .resize(fill().width(600).height(300));
 
-      if (isMedium) {
-        img.quality("auto:eco");
-      } else {
-        img.quality("auto");
-      }
-
+      img.quality(isMedium ? "auto:eco" : "auto");
       setCldImage(img);
       setIsBroken(false);
     }
   }, [image, effectiveType, saveData, isInView]);
 
-  const canShowImage = Boolean(cldImage) && !isBroken;
+  const canShowImage = cldImage && !isBroken;
 
   return (
     <div
