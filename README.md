@@ -63,7 +63,7 @@
 
 ## 📸 Preview
 
-![Smart Tech Digest preview](https://your-image-link-if-any.png)
+![Smart Tech Digest preview](https://smart-tech-digest-ylvi.vercel.app/)
 
 ---
 
